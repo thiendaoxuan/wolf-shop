@@ -21,13 +21,17 @@ class WolfItemFactory
         $name = $item->name;
         $sellIn = $item->sellIn;
         $initialQuality = $item->quality;
-
+        $data = [
+            'name' => $name,
+            'sell_in' => $sellIn,
+            'quality' => $initialQuality
+        ];
         return match ($name) {
-            AppleIpadAir::NAME => new AppleIpadAir($name, $sellIn, $initialQuality),
-            AppleAirPods::NAME => new AppleAirPods($name, $sellIn, $initialQuality),
-            SamsungGalaxyS23::NAME => new SamsungGalaxyS23($name, $sellIn, $initialQuality),
-            XiaomiRedmiNote13::NAME => new XiaomiRedmiNote13($name, $sellIn, $initialQuality),
-            default => new WolfItem($name, $sellIn, $initialQuality)
+            AppleIpadAir::NAME => new AppleIpadAir($data),
+            AppleAirPods::NAME => new AppleAirPods($data),
+            SamsungGalaxyS23::NAME => new SamsungGalaxyS23($data),
+            XiaomiRedmiNote13::NAME => new XiaomiRedmiNote13($data),
+            default => new WolfItem($data)
         };
     }
 }

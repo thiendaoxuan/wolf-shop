@@ -6,6 +6,9 @@ namespace App\Service;
 
 use App\Models\WolfItem\WolfItem;
 
+/**
+ * This service is for verifying logic only, no DB connection
+ */
 final class WolfService
 {
     private array $items;
@@ -22,7 +25,7 @@ final class WolfService
     {
         /** @var WolfItem $item */
         foreach ($this->items as $item) {
-            $item->update();
+            $item->updateByOneDay();
         }
     }
 

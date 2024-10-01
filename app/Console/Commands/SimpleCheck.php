@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Console\Commands;
 
 use App\Models\BaseClass\Item;
+use App\Models\WolfItem\WolfItem;
 use App\Service\WolfService;
 use Illuminate\Console\Command;
 
@@ -22,7 +23,7 @@ class SimpleCheck extends Command
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = 'Simple Check Script with Fake Data, No need Database';
 
     /**
      * Execute the console command.
@@ -43,17 +44,19 @@ class SimpleCheck extends Command
         // Loop through the days
         for ($day = 0; $day <= $days; $day++) {
             echo "** Day {$day} **\n";
-            echo "Item Name                 | Sell In | Quality\n";
+            echo "<Item Name, Sell In, Quality>\n";
 
+            /** @var WolfItem $item */
             foreach ($wolfShop->getWolfItems() as $item) {
                 // Print current state of each item
-                printf("%-25s | %7d | %7d\n", $item->name, $item->sellIn, $item->quality);
+                echo $item->toBaseItem() . "\n";
             }
 
             echo "-----------------------------------------------------------\n";
 
             // Update items for the next day
             $wolfShop->updateQuality();
+            // DO NOT SAVE
         }
     }
 }

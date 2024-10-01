@@ -6,13 +6,14 @@ namespace App\Models\WolfItem;
 
 class AppleAirPods extends WolfItem
 {
+    protected $table = 'wolf_items';
     public const NAME = 'Apple AirPods';
 
-    public function update(): void
+    public function updateByOneDay(): void
     {
-        $this->sellIn--;
+        $this->sell_in--;
         $this->increaseQuality(1);
-        if ($this->sellIn < 0) {
+        if ($this->sell_in < 0) {
             $this->increaseQuality(1);
         }
     }

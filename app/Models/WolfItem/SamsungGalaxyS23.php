@@ -6,9 +6,11 @@ namespace App\Models\WolfItem;
 
 class SamsungGalaxyS23 extends WolfItem
 {
+    protected $table = 'wolf_items';
+
     public const NAME = 'Samsung Galaxy S23';
 
-    public function update(): void
+    public function updateByOneDay(): void
     {
         // Does not change in quality or sellIn.
     }
