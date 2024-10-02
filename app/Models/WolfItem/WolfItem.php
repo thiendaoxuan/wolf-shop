@@ -14,14 +14,14 @@ use Illuminate\Database\Eloquent\Model;
  */
 class WolfItem extends Model
 {
-    protected $table = 'wolf_items';
-
-    protected $fillable = ['name', 'sell_in', 'quality'];
-    
     protected const MAX_QUALITY = 50;
 
     protected const MIN_QUALITY = 0;
-    
+
+    protected $table = 'wolf_items';
+
+    protected $fillable = ['name', 'sell_in', 'quality', 'image'];
+
     public function updateByOneDay(): void
     {
         $this->sell_in--;
@@ -32,6 +32,15 @@ class WolfItem extends Model
         }
     }
 
+    public function toBaseItem(): Item
+    {
+        return new Item(
+            $this->name,
+            $this->sell_in,
+            $this->quality
+        );
+    }
+
     protected function decreaseQuality($amount): void
     {
         $this->quality = max(self::MIN_QUALITY, $this->quality - $amount);
@@ -40,14 +49,5 @@ class WolfItem extends Model
     protected function increaseQuality($amount): void
     {
         $this->quality = min(self::MAX_QUALITY, $this->quality + $amount);
-    }
-    
-    public function toBaseItem(): Item
-    {
-        return new Item(
-            $this->name,
-            $this->sell_in,
-            $this->quality
-        );
     }
 }

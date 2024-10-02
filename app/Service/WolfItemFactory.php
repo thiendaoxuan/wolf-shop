@@ -24,7 +24,7 @@ class WolfItemFactory
         $data = [
             'name' => $name,
             'sell_in' => $sellIn,
-            'quality' => $initialQuality
+            'quality' => $initialQuality,
         ];
         return match ($name) {
             AppleIpadAir::NAME => new AppleIpadAir($data),

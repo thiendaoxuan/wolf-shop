@@ -16,7 +16,7 @@ class SimpleCheck extends Command
      *
      * @var string
      */
-    protected $signature = 'app:simpleCheck';
+    protected $signature = 'app:simple-check';
 
     /**
      * The console command description.

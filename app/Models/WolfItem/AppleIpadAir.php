@@ -6,9 +6,9 @@ namespace App\Models\WolfItem;
 
 class AppleIpadAir extends WolfItem
 {
-    protected $table = 'wolf_items';
-
     public const NAME = 'Apple iPad Air';
+
+    protected $table = 'wolf_items';
 
     public function updateByOneDay(): void
     {

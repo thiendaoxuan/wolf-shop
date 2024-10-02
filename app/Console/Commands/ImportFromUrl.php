@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Console\Commands;
 
 use App\Models\WolfItem\WolfItem;
@@ -9,6 +11,12 @@ use Throwable;
 
 class ImportFromUrl extends Command
 {
+    public const URL = 'https://api.restful-api.dev/objects';
+
+    public const DEFAULT_INITIAL_SELL_IN = 10;
+
+    public const DEFAULT_INITIAL_QUALITY = 10;
+
     /**
      * The name and signature of the console command.
      *
@@ -23,11 +31,6 @@ class ImportFromUrl extends Command
      */
     protected $description = 'Import data from URL';
 
-    const URL = 'https://api.restful-api.dev/objects';
-    const DEFAULT_INITIAL_SELL_IN = 10;
-    const DEFAULT_INITIAL_QUALITY = 10;
-
-
     /**
      * Execute the console command.
      */
@@ -38,34 +41,36 @@ class ImportFromUrl extends Command
             $rawDataFromUrl = Http::get(self::URL)->body();
             $itemData = json_decode($rawDataFromUrl, true);
         } catch (Throwable $e) {
-            print_r("Cannot fetch data from URL. Error: " . $e);
+            print_r('Cannot fetch data from URL. Error: ' . $e);
         }
-        
+
         $itemData = collect($itemData);
         // Remove any duplicate name from URL response
-        $itemData = $itemData->unique("name");
+        $itemData = $itemData->unique('name');
 
-        $existingItems = WolfItem::query()->whereIn("name", $itemData->pluck('name'))->get();
-        $existingItems = $existingItems->keyBy("name");
-        
+        $existingItems = WolfItem::query()->whereIn('name', $itemData->pluck('name'))->get();
+        $existingItems = $existingItems->keyBy('name');
+
         foreach ($itemData as $item) {
             $name = $item['name'];
-            
+
             /** @var WolfItem $existingItem */
             $existingItem = $existingItems[$name] ?? null;
-            if (!empty($existingItem)) {
-                echo $name . " existed. Increase Quality by 1" . "\n";
+            if (! empty($existingItem)) {
+                echo $name . ' existed. Increase Quality by 1' . "\n";
                 $existingItem->quality = $existingItem->quality + 1;
                 $existingItem->save();
             } else {
-                echo $name . " not existed. Create with default initial value" . "\n";
-                $wolf_item = new WolfItem([
-                    'name' => $name, 
-                    'sell_in' => self::DEFAULT_INITIAL_SELL_IN,
-                    'quality' => self::DEFAULT_INITIAL_QUALITY]
+                echo $name . ' not existed. Create with default initial value' . "\n";
+                $wolf_item = new WolfItem(
+                    [
+                        'name' => $name,
+                        'sell_in' => self::DEFAULT_INITIAL_SELL_IN,
+                        'quality' => self::DEFAULT_INITIAL_QUALITY,
+                    ]
                 );
-                $wolf_item->save();                
-            }   
+                $wolf_item->save();
+            }
         }
     }
 }

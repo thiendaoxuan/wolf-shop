@@ -6,8 +6,9 @@ namespace App\Models\WolfItem;
 
 class AppleAirPods extends WolfItem
 {
-    protected $table = 'wolf_items';
     public const NAME = 'Apple AirPods';
+
+    protected $table = 'wolf_items';
 
     public function updateByOneDay(): void
     {

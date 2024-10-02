@@ -6,9 +6,9 @@ namespace App\Models\WolfItem;
 
 class XiaomiRedmiNote13 extends WolfItem
 {
-    protected $table = 'wolf_items';
-
     public const NAME = 'Xiaomi Redmi Note 13';
+
+    protected $table = 'wolf_items';
 
     public function updateByOneDay(): void
     {

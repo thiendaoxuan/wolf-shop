@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Console\Commands;
 
 use App\Models\WolfItem\WolfItem;
@@ -8,6 +10,8 @@ use Illuminate\Console\Command;
 
 class UpdateAllItems extends Command
 {
+    public const CHUNK_SIZE = 5;
+
     /**
      * The name and signature of the console command.
      *
@@ -22,8 +26,6 @@ class UpdateAllItems extends Command
      */
     protected $description = 'Update All Item By 1 day';
 
-    const CHUNK_SIZE = 5;
-    
     /**
      * Execute the console command.
      */
@@ -32,7 +34,7 @@ class UpdateAllItems extends Command
         /** @var WolfServiceV2 $wolfService */
         $wolfService = app(WolfServiceV2::class);
         $wolfService->updateAllItem();
-        
+
         echo "Finish update all items. Here is preview of some items \n";
         $preview_items = WolfItem::query()->orderBy('id')->limit(20)->get();
         foreach ($preview_items as $item) {
