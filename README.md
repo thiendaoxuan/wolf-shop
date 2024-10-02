@@ -1,69 +1,61 @@
-# Coding assessment - PHP Version
+# Coding assessment
 
-## Dear Candidate
-Welcome to our take-home coding assessment. 
-We trust you'll find this assessment both challenging and rewarding, and we look forward to the opportunity to discuss your accomplishments further in the next stage.
+The solution includes :
 
-## Project features
-We have a system in place that updates our inventory for us.
+- WolfItem.php : Item.php wrapper, and refactored WolfService
+- All required command line
+- Dockerized web service (set up guide below)
+- Unit test for WolfService
+- For database, we use sqlite
+- For scalability : Image upload is stored locally first, then upload to Cloud asynchronously
 
-- All items have a `SellIn` value which denotes the number of days we have to sell the items
-- All items have a `Quality` value which denotes how valuable the item is
-- At the end of each day our system lowers both values for every item
+## Requirement: PHP 8.2+
+## Set up
+### Install libs :
+````
+composer install
+````
+### Set up test DB
+````
+php artisan migrate
+php artisan db:seed
+````
+To completely reset DB, can use `php artisan migrate:fresh`
+This include a test user account : `admin@example.com / Passwords : admin`
 
-Pretty simple, right? Well this is where it gets interesting:
+### Run web server
+Via docker - this should be enough
+````
+docker-compose up --build
+````
+Or run locally (in case something went wrong with docker), run 2 command in separated window :
 
-- Once the sell by date has passed, Quality degrades twice as fast
-- The Quality of an item is never negative
-- **"Apple AirPods"** actually increases in Quality the older it gets
-- The Quality of an item is never more than 50
-- **"Samsung Galaxy S23"**, being a legendary item, never has to be sold or decreases in Quality
-- **"Apple iPad Air"**, like **"Apple AirPods"**, increases in Quality as its SellIn value approaches;
-- `Quality` increases by `2` when there are `10` days or less and by `3` when there are `5` days or less but
-- `Quality` drops to `0` after the concert
+- Web server : `php artisan serve`
+- Background Worker : `php artisan queue:work`
 
-We have recently signed a supplier of conjured items. This requires an update to our system:
+Web server will be running on `localhost:8000`
+## Command 
+These command can be run on host or inside docker
+### Simple test 
+Create fake item and apply update on them, then print result to check logic
+````
+app:simple-check
+````
+### Import from URL
+````
+app:import-from-url
+````
+### Update all item in DB by 1 day
+````
+app:update-all-items
+````
 
-- **"Xiaomi Redmi Note 13"** items degrade in `Quality` twice as fast as normal items
+## Web server endpoint
 
-Feel free to make any changes to the `UpdateQuality` method and add any new code as long as everything still works correctly. 
-However, do not alter the Item class or Items property as those belong to the goblin in the corner who will insta-rage and one-shot you as he doesn't believe in shared code ownership (you can make the `UpdateQuality` method and `Items` property static if you like, we'll cover for you).
+### Get list item
+`/api/products`
+### Add image
+`localhost:8000/api/products/{id}/upload-image`
 
-Just for clarification, an item can never have its `Quality` increase above `50`, however **"Samsung Galaxy S23"** is a legendary item and as such its `Quality` is `80` & it never alters.
+Only 1 body field: image
 
-## Folders
-
-- `src` - contains the two classes:
-    - `Item.php` - this class should not be changed
-    - `WolfService.php` - this class needs to be refactored, and the new feature added
-
-## 🎯 Goal
-- Refactor the `WolfService` class to make any changes to the `UpdateQuality` method and add any new code as long as everything still works correctly.
-- Store the `Items` in a storage engine of your choice. (e.g. Database, In-memory)  
-- Create a console command to import `Item` to our inventory  from API `https://api.restful-api.dev/objects` (https://restful-api.dev/). In case Item already exists by `name` in the storage, update `Quality` for it.
-- Provide another API endpoint to upload `imgUrl` via [https://cloudinary.com](https://cloudinary.com/documentation/php_image_and_video_upload) (credentials will be sent in email's attachment) for the `Item`. API should be authentication with basic username/password login. The credentials can be hardcoded.
-- Unit testing.
-
-## 💡 Hints before you start working on it
-* Keep KISS, DRY, YAGNI, SOLID principles in mind.
-* Your code should be tested
-
-## How to submit your work
-- You can do with Laravel or Symfony framework.
-- Start by creating a new Git repository on a platform like GitHub, GitLab, or Bitbucket (all the code is your IP)
-- Create README.md for the project with the setup instruction
-- The server must be able to run and tested based on the README instructions
-- Upload the Postman workspace
-- Share the public git repository URL
-
-### Bonus:
-- Dockerize the application
-- CI/CD skeleton
-- Server scalability
-
-## Recommendations
-- Read the features and the bonus features carefully before you start coding
-- Committing changes at appropriate intervals in Git
-- Leave TODO in the code if you couldn't finish a solution, you have chance to explain it during the interview
-
-**Happy coding**!
