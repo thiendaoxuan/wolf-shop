@@ -14,6 +14,27 @@ use Illuminate\Support\Facades\Validator;
 
 class WolfShopController extends Controller
 {
+    public function getProduct(Request $request): JsonResponse
+    {
+        $params = $request->only(['limit']);
+        // Validate the request
+        $validator = Validator::make(
+            $params,
+            [
+                'limit' => 'int|max:20', // 2MB max size
+            ]
+        );
+
+        if ($validator->fails()) {
+            return response()->json([
+                'message' => $validator->messages(),
+            ], 400);
+        }
+        
+        $items = WolfItem::query()->orderBy('id')->limit($params['limit'] ?? 100)->get();
+        
+        return response()->json([$items->toArray()]);
+    }
     public function uploadImage(Request $request, $productId): JsonResponse
     {
         $params = $request->only(['image']);
@@ -26,7 +47,7 @@ class WolfShopController extends Controller
         );
         
         if ($validator->fails()) {
-            response()->json([
+            return response()->json([
                 'message' => $validator->messages(),
             ], 400);
         }
