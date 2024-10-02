@@ -9,6 +9,8 @@ The solution includes :
 - For database, we use sqlite
 - For performance : Image upload is stored locally first, then upload to Cloud asynchronously
 
+This project use Laravel and follow Laravel project structure, most logic code can be found inside `app/`
+
 ## Requirement: PHP 8.2+
 ## Set up
 ### Install libs :
