@@ -25,8 +25,6 @@ COPY . /var/www/html
 # Install PHP dependencies
 RUN composer install
 
-RUN composer dump-autoload
-
 # Expose port for the Laravel development server
 EXPOSE 8000
 
