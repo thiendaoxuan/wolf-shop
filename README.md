@@ -7,7 +7,7 @@ The solution includes :
 - Dockerized web service (set up guide below)
 - Unit test for WolfService
 - For database, we use sqlite
-- For scalability : Image upload is stored locally first, then upload to Cloud asynchronously
+- For performance : Image upload is stored locally first, then upload to Cloud asynchronously
 
 ## Requirement: PHP 8.2+
 ## Set up
@@ -39,15 +39,15 @@ These command can be run on host or inside docker
 ### Simple test 
 Create fake item and apply update on them, then print result to check logic
 ````
-app:simple-check
+php artisan app:simple-check
 ````
 ### Import from URL
 ````
-app:import-from-url
+php artisan app:import-from-url
 ````
 ### Update all item in DB by 1 day
 ````
-app:update-all-items
+php artisan app:update-all-items
 ````
 
 ## Web server endpoint
