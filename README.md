@@ -20,11 +20,13 @@ composer install
 php artisan migrate
 php artisan db:seed
 ````
-To completely reset DB, can use `php artisan migrate:fresh`
 This include a test user account : `admin@example.com / Passwords : admin`
 
+If you want completely reset DB to run everything again, can use `php artisan migrate:fresh`
+
+
 ### Run web server
-Via docker - this should be enough
+Docker - this should be enough
 ````
 docker-compose up --build
 ````
